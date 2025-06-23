@@ -1,0 +1,22 @@
+import pandas as pd
+
+student_data = {
+    'Register Number': [101, 102, 103, 104],
+    'Student Name': ['krishna', 'gopi', 'ruthin', 'sai'],
+    'Math': [85, 92, 75, 98],
+    'Science': [90, 88, 82, 95],
+    'English': [78, 95, 70, 92],
+    'History': [88, 80, 78, 96]
+}
+
+df = pd.DataFrame(student_data)
+
+average_scores = df[['Math', 'Science', 'English', 'History']].mean()
+
+highest_avg_subject = average_scores.idxmax()
+
+print("Student Data:")
+print(df)
+print("\nAverage scores per subject:")
+print(average_scores)
+print("\nSubject with the highest average score:", highest_avg_subject)
