@@ -1,0 +1,16 @@
+import pandas as pd
+data = {
+    'Product': ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'],
+    'Category': ['Electronics', 'Clothing', 'Electronics', 'Home', 'Clothing', 'Electronics', 'Clothing', 'Electronics', 'Home', 'Clothing', 'Electronics', 'Clothing', 'Electronics', 'Home', 'Clothing'],
+    'QuantitySold': [10, 15, 8, 12, 20, 5, 18, 11, 9, 25, 14, 10, 7, 15, 22],
+    'Price': [100, 50, 120, 80, 30, 100, 50, 120, 80, 30, 100, 50, 120, 80, 30]
+}
+sales_df = pd.DataFrame(data)
+sales_df['TotalRevenue'] = sales_df['QuantitySold'] * sales_df['Price']
+top_products_by_quantity = sales_df.groupby('Product')['QuantitySold'].sum().nlargest(5)
+print("Top 5 Products by Quantity Sold:\n", top_products_by_quantity)
+top_products_by_revenue = sales_df.groupby('Product')['TotalRevenue'].sum().nlargest(5)
+print("\nTop 5 Products by Revenue:\n", top_products_by_revenue)
+category_revenue = sales_df.groupby('Category')['TotalRevenue'].sum()
+highest_revenue_category = category_revenue.idxmax()
+print("\nCategory with the highest revenue:", highest_revenue_category)
