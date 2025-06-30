@@ -1,0 +1,92 @@
+data = {'feedback': ["This is a positive feedback.",
+                     "The service was great!",
+                     "I had a negative experience.",
+                     "This is an amazing product.",
+                     "The service was terrible.",
+                     "Amazing great service!"]}
+df_feedback = pd.DataFrame(data)
+df_feedback.to_csv('data.csv', index=False)
+
+
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+
+def preprocess_text(text):
+    """
+    Preprocesses text data by removing punctuation, converting to lowercase,
+    and removing stop words.
+
+    Args:
+        text (str): The input text string.
+
+    Returns:
+        str: The preprocessed text string.
+    """
+    # Remove punctuation
+    text = re.sub(r'[^\w\s]', '', text)
+    # Convert to lowercase
+    text = text.lower()
+    # Remove stop words
+    stop_words = set(stopwords.words('english'))
+    words = text.split()
+    filtered_words = [word for word in words if word not in stop_words]
+    return ' '.join(filtered_words)
+
+def analyze_feedback(filename, N):
+    """
+    Analyzes customer feedback data to find the most frequent words.
+
+    Args:
+        filename (str): The name of the CSV file containing feedback.
+        N (int): The number of top frequent words to display and plot.
+    """
+    try:
+        df = pd.read_csv(filename)
+        if 'feedback' not in df.columns:
+            print(f"Error: The file '{filename}' must contain a 'feedback' column.")
+            return
+    except FileNotFoundError:
+        print(f"Error: The file '{filename}' was not found.")
+        return
+
+    # Apply preprocessing to the feedback column
+    df['processed_feedback'] = df['feedback'].apply(preprocess_text)
+
+    # Combine all processed feedback into a single string and split into words
+    all_words = ' '.join(df['processed_feedback']).split()
+
+    # Calculate word frequency
+    word_counts = Counter(all_words)
+
+    # Get the top N most frequent words
+    top_words = word_counts.most_common(N)
+
+    # Display the top N most frequent words
+    print(f"\nTop {N} Most Frequent Words:")
+    for word, frequency in top_words:
+        print(f"{word}: {frequency}")
+
+    # Plot a bar graph
+    if top_words:
+        words, frequencies = zip(*top_words)
+        plt.figure(figsize=(10, 6))
+        plt.bar(words, frequencies)
+        plt.title(f"Top {N} Most Frequent Words in Customer Feedback")
+        plt.xlabel("Words")
+        plt.ylabel("Frequency")
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
+    else:
+        print("No words found for plotting.")
+
+# Get user input for N
+try:
+    N = int(input("Enter the number of top words to display and plot: "))
+except ValueError:
+    print("Invalid input. Please enter an integer.")
+    N = 10 # Default to 10 if input is invalid
+
+# Analyze the feedback data
+analyze_feedback('data.csv', N)
