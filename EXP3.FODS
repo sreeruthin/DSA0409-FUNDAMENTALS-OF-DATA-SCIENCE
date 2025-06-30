@@ -1,0 +1,30 @@
+
+import numpy as np
+house_data = np.array([
+    [3, 1500, 250000, 1],
+    [5, 2200, 400000, 1],
+    [4, 1800, 300000, 0],
+    [6, 2800, 550000, 1],
+    [5, 2100, 380000, 0],
+    [7, 3500, 700000, 1],
+    [4, 1700, 280000, 1],
+    [5, 2300, 420000, 1]
+])
+
+houses_more_than_four_bedrooms = house_data[house_data[:, 0] > 4]
+
+num_houses_more_than_four_bedrooms = houses_more_than_four_bedrooms.shape[0]
+
+sold_houses_more_than_four_bedrooms = houses_more_than_four_bedrooms[houses_more_than_four_bedrooms[:, 3] == 1]
+
+num_sold_houses_more_than_four_bedrooms = sold_houses_more_than_four_bedrooms.shape[0]
+
+if num_sold_houses_more_than_four_bedrooms > 0:
+  average_sale_price = np.mean(sold_houses_more_than_four_bedrooms[:, 2])
+  print(f"Average sale price of sold houses with more than four bedrooms: ${average_sale_price:.2f}")
+else:
+  print("No houses with more than four bedrooms were sold.")
+
+
+print(f"Number of houses with more than four bedrooms: {num_houses_more_than_four_bedrooms}")
+print(f"Number of houses with more than four bedrooms that were sold: {num_sold_houses_more_than_four_bedrooms}")
