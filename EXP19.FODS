@@ -1,0 +1,15 @@
+data = {'Date': pd.to_datetime(['2023-01-01', '2023-01-01', '2023-01-02', '2023-01-03', '2023-01-03', '2023-01-04']),
+        'Product': ['A', 'B', 'A', 'C', 'B', 'A'],
+        'Quantity Sold': [10, 5, 8, 12, 6, 15],
+        'Unit Price': [20, 50, 20, 10, 50, 20]}
+sales_df = pd.DataFrame(data)
+sales_df.to_csv('sales_data.csv', index=False)
+sales_df = pd.read_csv('sales_data.csv')
+sales_df['Total Sales'] = sales_df['Quantity Sold'] * sales_df['Unit Price']
+sales_df['Profit'] = sales_df['Total Sales'] * 0.20
+product_profit = sales_df.groupby('Product')['Profit'].sum().sort_values(ascending=False)
+print("Total sales for each product:")
+print(sales_df.groupby('Product')['Total Sales'].sum())
+print("\nOverall Profit:", sales_df['Profit'].sum())
+print("\nTop 5 most profitable products:")
+print(product_profit.head(5))
