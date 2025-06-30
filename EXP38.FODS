@@ -1,0 +1,31 @@
+
+
+import pandas as pd
+
+# Create a sample dataset (replace with your actual data loading)
+data = {
+    'City': ['New York', 'New York', 'New York', 'Los Angeles', 'Los Angeles', 'Los Angeles', 'Chicago', 'Chicago', 'Chicago'],
+    'Temperature': [30, 35, 28, 70, 75, 68, 40, 45, 38]
+}
+df = pd.DataFrame(data)
+
+# 1. Calculate the mean temperature for each city
+mean_temp = df.groupby('City')['Temperature'].mean()
+print("Mean temperature for each city:")
+print(mean_temp)
+
+# 2. Calculate the standard deviation of temperature for each city
+std_temp = df.groupby('City')['Temperature'].std()
+print("\nStandard deviation of temperature for each city:")
+print(std_temp)
+
+# 3. Determine the city with the highest temperature range
+temp_range = df.groupby('City')['Temperature'].apply(lambda x: x.max() - x.min())
+city_highest_range = temp_range.idxmax()
+highest_range_value = temp_range.max()
+print(f"\nCity with the highest temperature range: {city_highest_range} (Range: {highest_range_value})")
+
+# 4. Find the city with the most consistent temperature (the lowest standard deviation)
+city_most_consistent = std_temp.idxmin()
+lowest_std_value = std_temp.min()
+print(f"\nCity with the most consistent temperature: {city_most_consistent} (Standard Deviation: {lowest_std_value})")
