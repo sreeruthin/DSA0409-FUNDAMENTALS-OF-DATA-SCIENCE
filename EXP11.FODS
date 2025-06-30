@@ -1,0 +1,24 @@
+plt.figure(figsize=(10, 6))
+plt.plot(months, sales, marker='o', linestyle='-')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.title('Monthly Sales Data (Line Plot)')
+plt.grid(True)
+plt.show()
+
+# 2. Scatter Plot
+plt.figure(figsize=(10, 6))
+plt.scatter(months, sales)
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.title('Monthly Sales Data (Scatter Plot)')
+plt.grid(True)
+plt.show()
+
+# 3. Bar Plot
+plt.figure(figsize=(10, 6))
+plt.bar(months, sales)
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.title('Monthly Sales Data (Bar Plot)')
+plt.show()
