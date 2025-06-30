@@ -1,0 +1,28 @@
+from collections import Counter
+import re
+
+# Create a dummy text file for demonstration
+with open("sample_text.txt", "w") as f:
+    f.write("This is a sample text file.\n")
+    f.write("It contains some sample text for word frequency analysis.\n")
+    f.write("Sample text, sample frequency, sample analysis.")
+
+def word_frequency(filename):
+    """
+    Calculates the frequency distribution of words in a text document.
+
+    Args:
+        filename (str): The name of the text file.
+
+    Returns:
+        collections.Counter: A Counter object containing word frequencies.
+    """
+    with open(filename, 'r') as f:
+        text = f.read().lower() # Read and convert to lowercase
+    # Remove punctuation and split into words
+    words = re.findall(r'\b\w+\b', text)
+    return Counter(words)
+
+# Calculate and print the word frequency
+word_counts = word_frequency("sample_text.txt")
+word_counts
