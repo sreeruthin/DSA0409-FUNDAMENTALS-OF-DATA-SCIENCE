@@ -1,0 +1,53 @@
+
+
+!pip install scikit-learn
+import pandas as pd
+from sklearn.tree import DecisionTreeRegressor, export_text
+
+# Create a sample dataset (replace with your actual data loading)
+data = {'Mileage': [50000, 70000, 30000, 90000, 60000],
+        'Age': [5, 7, 3, 10, 6],
+        'Brand': ['Toyota', 'Honda', 'Ford', 'Nissan', 'Toyota'],
+        'EngineType': ['Gas', 'Gas', 'Electric', 'Gas', 'Hybrid'],
+        'Price': [15000, 12000, 25000, 8000, 16000]}
+df = pd.DataFrame(data)
+
+# Convert categorical features to numerical using one-hot encoding
+df = pd.get_dummies(df, columns=['Brand', 'EngineType'])
+
+# Separate features (X) and target (y)
+X = df.drop('Price', axis=1)
+y = df['Price']
+
+# Create and train the CART model
+model = DecisionTreeRegressor(random_state=42)
+model.fit(X, y)
+
+# Get user input for a new car
+print("Enter features for the new car:")
+mileage = int(input("Mileage: "))
+age = int(input("Age: "))
+brand = input("Brand (Toyota, Honda, Ford, Nissan): ")
+engine_type = input("Engine Type (Gas, Electric, Hybrid): ")
+
+# Create a DataFrame for the new car input, ensuring consistent columns
+new_car_data = {'Mileage': [mileage],
+                'Age': [age],
+                'Brand': [brand],
+                'EngineType': [engine_type]}
+new_car_df = pd.DataFrame(new_car_data)
+new_car_df = pd.get_dummies(new_car_df, columns=['Brand', 'EngineType'])
+
+# Reindex the new car DataFrame to match the training data's columns and fill missing with 0
+new_car_df = new_car_df.reindex(columns=X.columns, fill_value=0)
+
+# Predict the price
+predicted_price = model.predict(new_car_df)
+
+print(f"\nPredicted Price: ${predicted_price[0]:.2f}")
+
+# Display the decision path (requires a bit more effort with scikit-learn)
+# We can't directly get the path for a single prediction easily, but we can show the tree structure.
+print("\nDecision Tree Structure (simplified representation):")
+tree_rules = export_text(model, feature_names=list(X.columns))
+tree_rules
