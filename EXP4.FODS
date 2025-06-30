@@ -1,0 +1,12 @@
+sales_data = np.array([150000, 180000, 210000, 250000])
+categories = np.array(["Electronics", "Clothing", "Home Goods", "Electronics"])
+
+total_sales = np.sum(sales_data)
+print(f"Total sales for the year: ${total_sales}")
+
+percentage_increase = ((sales_data[3] - sales_data[0]) / sales_data[0]) * 100
+print(f"Percentage increase in sales from Q1 to Q4: {percentage_increase:.2f}%")
+
+highest_sales_index = np.argmax(sales_data)
+highest_category = categories[highest_sales_index]
+print(f"The category with the highest sales is: {highest_category}")
