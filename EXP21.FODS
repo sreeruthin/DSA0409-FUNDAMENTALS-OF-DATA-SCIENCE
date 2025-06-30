@@ -1,0 +1,9 @@
+data = {'Employee ID': [101, 102, 103, 104, 105, 106],
+        'Full Name': ['Alice Smith', 'Bob Johnson', 'Charlie Brown', 'David Lee', 'Eve Adams', 'Frank White'],
+        'Department': ['Sales', 'IT', 'Sales', None, 'IT', 'Finance'],
+        'Salary': ['50000', '60000', '55000', '70000', '62000', '75000']}
+employee_df = pd.DataFrame(data)
+employee_df['Salary'] = pd.to_numeric(employee_df['Salary'])
+employee_df.dropna(subset=['Department'], inplace=True)
+employee_df['First Name'] = employee_df['Full Name'].apply(lambda x: x.split()[0])
+employee_df
