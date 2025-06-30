@@ -1,0 +1,72 @@
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Sample data (replace with your actual data)
+study_time = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+exam_scores = np.array([50, 55, 60, 65, 70, 75, 80, 85, 90, 95])
+
+# Create a Pandas DataFrame
+data = pd.DataFrame({'Study Time (hours)': study_time, 'Exam Score': exam_scores})
+
+# Display the first few rows of the DataFrame
+print("Sample Data:")
+print(data.head())
+
+# Calculate the correlation coefficient
+correlation = data['Study Time (hours)'].corr(data['Exam Score'])
+print(f"\nCorrelation between Study Time and Exam Score: {correlation:.2f}")
+
+# Visualize the relationship
+
+# 1. Scatter Plot
+plt.figure(figsize=(8, 6))
+plt.scatter(data['Study Time (hours)'], data['Exam Score'])
+plt.title('Scatter Plot of Study Time vs. Exam Score')
+plt.xlabel('Study Time (hours)')
+plt.ylabel('Exam Score')
+plt.grid(True)
+plt.show()
+
+# 2. Scatter Plot with Regression Line (using Seaborn)
+plt.figure(figsize=(8, 6))
+sns.regplot(x='Study Time (hours)', y='Exam Score', data=data)
+plt.title('Scatter Plot with Regression Line')
+plt.xlabel('Study Time (hours)')
+plt.ylabel('Exam Score')
+plt.grid(True)
+plt.show()
+
+# 3. Line Plot (if you want to see the trend sequentially, though scatter is better for this data)
+plt.figure(figsize=(8, 6))
+plt.plot(data['Study Time (hours)'], data['Exam Score'], marker='o', linestyle='-')
+plt.title('Line Plot of Study Time vs. Exam Score')
+plt.xlabel('Study Time (hours)')
+plt.ylabel('Exam Score')
+plt.grid(True)
+plt.show()
+
+# 4. Heatmap of Correlation (if you had multiple variables)
+# In this case, with only two variables, it's simple, but good for showing the concept
+correlation_matrix = data.corr()
+plt.figure(figsize=(4, 3))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Heatmap')
+plt.show()
+
+print("\nAnalysis:")
+if correlation > 0.7:
+    print("There appears to be a strong positive correlation between study time and exam scores.")
+elif correlation > 0.3:
+    print("There appears to be a moderate positive correlation between study time and exam scores.")
+elif correlation > -0.3:
+    print("There appears to be a weak or no significant linear correlation between study time and exam scores.")
+elif correlation > -0.7:
+    print("There appears to be a moderate negative correlation between study time and exam scores.")
+else:
+    print("There appears to be a strong negative correlation between study time and exam scores.")
+
+print("The scatter plots visually confirm the relationship. The regression line helps visualize the trend.")
