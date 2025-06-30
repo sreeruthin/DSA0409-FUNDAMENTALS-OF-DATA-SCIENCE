@@ -1,0 +1,57 @@
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.preprocessing import StandardScaler
+
+# Create a dummy dataset
+data = {
+    'age': [30, 45, 22, 60, 55, 38, 49, 70, 28, 42],
+    'gender': ['Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male'],
+    'blood_pressure': [120, 140, 110, 150, 135, 125, 145, 160, 115, 130],
+    'cholesterol': [180, 220, 160, 250, 210, 190, 230, 280, 170, 200],
+    'outcome': ['Good', 'Bad', 'Good', 'Bad', 'Good', 'Good', 'Bad', 'Bad', 'Good', 'Good']
+}
+df = pd.DataFrame(data)
+
+# Preprocessing: Convert categorical features to numerical
+df['gender'] = df['gender'].astype('category').cat.codes
+
+# Separate features and target variable
+X = df[['age', 'gender', 'blood_pressure', 'cholesterol']]
+y = df['outcome']
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Scale the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Build the KNN model
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# Train the model
+knn.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred = knn.predict(X_test_scaled)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, pos_label='Good')
+recall = recall_score(y_test, y_pred, pos_label='Good')
+f1 = f1_score(y_test, y_pred, pos_label='Good')
+
+print(f"Accuracy: {accuracy:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
+print(f"F1-score: {f1:.4f}")
+
+# Display predictions
+print("\nPredictions on the test set:")
+predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+predictions_df
