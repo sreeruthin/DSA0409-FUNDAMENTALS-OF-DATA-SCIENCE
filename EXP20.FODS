@@ -1,0 +1,29 @@
+customer_data = {
+    'Customer ID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    'Age': [25, 30, 45, 22, 38, 50, 29, 35, 41, 27],
+    'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female'],
+    'Total Spending': [150.50, 300.25, 75.00, 500.75, 120.00, 600.00, 90.50, 450.00, 210.75, 85.00]
+}
+customer_df = pd.DataFrame(customer_data)
+print("Original DataFrame:")
+print(customer_df)
+print("\n")
+# b) Segment customers into three groups based on their total spending
+# Define spending thresholds
+low_spending_threshold = 150
+high_spending_threshold = 400
+def segment_customer(spending):
+  if spending < low_spending_threshold:
+    return 'Low Spenders'
+  elif spending < high_spending_threshold:
+    return 'Medium Spenders'
+  else:
+    return 'High Spenders'
+customer_df['Spending Segment'] = customer_df['Total Spending'].apply(segment_customer)
+print("DataFrame with Spending Segments:")
+print(customer_df)
+print("\n")
+# c) Calculate the average age of customers in each spending segment
+average_age_by_segment = customer_df.groupby('Spending Segment')['Age'].mean().reset_index()
+print("Average Age by Spending Segment:")
+average_age_by_segment
