@@ -1,0 +1,33 @@
+def analyze_customer_reviews(reviews):
+  """
+  Calculates the frequency distribution of words in a list of customer reviews.
+
+  Args:
+    reviews (list): A list of strings, where each string is a customer review.
+
+  Returns:
+    collections.Counter: A Counter object containing word frequencies.
+  """
+  all_words = []
+  for review in reviews:
+    # Convert to lowercase and remove punctuation
+    words = re.findall(r'\b\w+\b', review.lower())
+    all_words.extend(words)
+  return Counter(all_words)
+
+# Example usage with dummy data
+customer_reviews = [
+    "This product is excellent! I highly recommend it.",
+    "The quality is good for the price.",
+    "Not happy with the product, it broke after a week.",
+    "Excellent customer service and fast delivery.",
+    "Good value for money, would buy again."
+]
+
+# Calculate the word frequency distribution
+review_word_counts = analyze_customer_reviews(customer_reviews)
+
+# Print the frequency distribution
+print("Frequency distribution of words in customer reviews:")
+for word, frequency in review_word_counts.items():
+  print(f"'{word}': {frequency}")
