@@ -1,0 +1,30 @@
+import pandas as pd
+
+# Create a dummy CSV file for demonstration
+data = {'Date': pd.to_datetime(['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05']),
+        'Close': [150.00, 151.50, 149.80, 152.10, 150.50]}
+df = pd.DataFrame(data)
+df.to_csv('stock_data.csv', index=False)
+
+# Read the CSV file
+try:
+    stock_data = pd.read_csv('stock_data.csv')
+    # Ensure the 'Close' column is numeric
+    stock_data['Close'] = pd.to_numeric(stock_data['Close'])
+
+    # Calculate variability (standard deviation of closing prices)
+    variability = stock_data['Close'].std()
+
+    print(f"Stock Price Variability (Standard Deviation): {variability:.2f}")
+
+    # Basic insights
+    print(f"Maximum Closing Price: {stock_data['Close'].max():.2f}")
+    print(f"Minimum Closing Price: {stock_data['Close'].min():.2f}")
+    print(f"Average Closing Price: {stock_data['Close'].mean():.2f}")
+
+except FileNotFoundError:
+    print("Error: stock_data.csv not found.")
+except KeyError:
+    print("Error: 'Close' column not found in the CSV.")
+except Exception as e:
+    print(f"An error occurred: {e}")
