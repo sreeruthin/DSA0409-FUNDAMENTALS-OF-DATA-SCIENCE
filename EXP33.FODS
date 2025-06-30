@@ -1,0 +1,158 @@
+!pip install scikit-learn
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Load the dataset (replace 'car_data.csv' with the actual filename or path)
+# You might need to upload the file to Colab or connect your Google Drive.
+try:
+    # Assuming the DataFrame 'df' with 'Size' and 'Price' columns is already loaded
+    # df = pd.read_csv('car_data.csv')
+    pass # Keep the existing df if it's already loaded
+except FileNotFoundError:
+    print("Error: 'car_data.csv' not found. Please upload the file or adjust the path.")
+    # You might need to provide instructions on how to upload or load data
+    # For demonstration purposes, I will create a sample DataFrame if 'df' is not available
+    if 'df' not in locals():
+        data = {'Size': [1000, 1200, 1500, 1800, 2000, 2200, 2500, 2800, 3000, 3500],
+                'Price': [200000, 230000, 280000, 320000, 350000, 380000, 420000, 450000, 480000, 550000]}
+        df = pd.DataFrame(data)
+
+
+# Assuming the dataset has columns like 'engine_size', 'horsepower', 'fuel_efficiency', 'price', etc.
+# Select features (independent variables) and target (dependent variable)
+# Replace the example column names with the actual names in your dataset
+# features = ['engine_size', 'horsepower', 'fuel_efficiency'] # Example features
+# target = 'price'
+
+# Using the available columns 'Size' as feature and 'Price' as target
+features = ['Size']
+target = 'Price'
+
+
+X = df[features]
+y = df[target]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Linear Regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"Mean Squared Error: {mse:.2f}")
+print(f"R-squared: {r2:.2f}")
+
+# Get model coefficients and intercept
+coefficients = model.coef_
+intercept = model.intercept_
+
+print("\nModel Coefficients:")
+for feature, coef in zip(features, coefficients):
+    print(f"{feature}: {coef:.2f}")
+print(f"Intercept: {intercept:.2f}")
+
+# Provide insights to the marketing team
+print("\nInsights for the Marketing Team:")
+print("Based on the linear regression model, the following features have the most influence on car prices:")
+
+# Sort features by the absolute value of their coefficients to see the magnitude of influence
+feature_influence = sorted(zip(features, abs(coefficients)), key=lambda x: x[1], reverse=True)
+
+for feature, influence in feature_influence:
+    original_coef = coefficients[features.index(feature)]
+    if original_coef > 0:
+        print(f"- {feature}: A higher value in this feature is associated with a higher car price (Coefficient: {original_coef:.2f}).")
+    else:
+        print(f"- {feature}: A higher value in this feature is associated with a lower car price (Coefficient: {original_coef:.2f}).")
+
+print("\nThe R-squared value indicates the proportion of the variance in car prices that can be predicted from the features.")
+print(f"Our model explains {r2:.2%} of the variance in car prices.")
+print("Further analysis can involve exploring non-linear relationships, adding more features, or using different models for potentially better predictions.")
+
+
+
+
+
+
+
+
+
+
+#method-2
+
+
+
+
+# Import required libraries
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_absolute_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (replace this with your actual data file if needed)
+# Example: df = pd.read_csv('car_data.csv')
+data = {
+    'EngineSize': [1.6, 2.0, 2.4, 3.5, 1.8, 2.0, 3.0, 4.0],
+    'Horsepower': [110, 150, 160, 250, 130, 145, 220, 300],
+    'FuelEfficiency': [35, 30, 28, 22, 33, 31, 24, 18],
+    'Weight': [2700, 3000, 3200, 3800, 2900, 3100, 3500, 4000],
+    'Price': [18000, 22000, 24000, 32000, 20000, 23000, 30000, 40000]
+}
+
+df = pd.DataFrame(data)
+
+# Separate features (X) and target variable (y)
+features = ['EngineSize', 'Horsepower', 'FuelEfficiency', 'Weight']
+X = df[features]
+y = df['Price']
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and train the linear regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate model performance
+r2 = r2_score(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+
+# Display model coefficients
+coefficients = pd.Series(model.coef_, index=features)
+intercept = model.intercept_
+
+# Print model evaluation results
+print("Model Performance:")
+print(f"R² Score: {r2:.2f}")
+print(f"Mean Absolute Error: ${mae:.2f}\n")
+
+print("Feature Coefficients (Influence on Price):")
+print(coefficients.sort_values(ascending=False))
+print(f"\nIntercept: {intercept:.2f}")
+
+# Optional: visualize feature importance
+plt.figure(figsize=(8, 5))
+sns.barplot(x=coefficients.values, y=coefficients.index)
+plt.title('Feature Influence on Car Price (Linear Regression Coefficients)')
+plt.xlabel('Coefficient Value')
+plt.ylabel('Feature')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
