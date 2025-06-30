@@ -1,0 +1,16 @@
+fuel_efficiency = np.array([30, 35, 28, 40, 32])
+car_models = np.array(["Model A", "Model B", "Model C", "Model D", "Model E"])
+fuel_capacity = np.array([12, 15, 11, 18, 14])
+
+average_fuel_efficiency = np.mean(fuel_efficiency)
+
+model_a_efficiency = fuel_efficiency[car_models == "Model A"][0]
+model_b_efficiency = fuel_efficiency[car_models == "Model B"][0]
+
+percentage_improvement = ((model_b_efficiency - model_a_efficiency) / model_a_efficiency) * 100
+
+print(f"Average fuel efficiency: {average_fuel_efficiency:.2f} MPG")
+print(f"Percentage improvement in fuel efficiency between Model A and Model B: {percentage_improvement:.2f}%")
+
+for i in range(len(car_models)):
+  print(f"Car Model: {car_models[i]}, Fuel Capacity: {fuel_capacity[i]} gallons")
