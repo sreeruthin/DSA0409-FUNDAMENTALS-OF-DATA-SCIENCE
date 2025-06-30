@@ -1,0 +1,25 @@
+from sklearn.cluster import KMeans
+import numpy as np
+import pandas as pd
+
+data = {'Feature1': [10, 15, 12, 8, 20, 25, 22, 18, 30, 35],
+        'Feature2': [100, 150, 120, 80, 200, 250, 220, 180, 300, 350],
+        'Feature3': [5, 8, 6, 4, 10, 12, 11, 9, 15, 18]}
+customer_df = pd.DataFrame(data)
+
+features_for_clustering = customer_df[['Feature1', 'Feature2', 'Feature3']]
+
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+kmeans.fit(features_for_clustering)
+
+def get_customer_features():
+    feature1 = float(input("Enter Feature1: "))
+    feature2 = float(input("Enter Feature2: "))
+    feature3 = float(input("Enter Feature3: "))
+    return np.array([[feature1, feature2, feature3]])
+
+new_customer_features = get_customer_features()
+
+predicted_segment = kmeans.predict(new_customer_features)
+
+print(f"The new customer belongs to segment: {predicted_segment[0]}")
