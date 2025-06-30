@@ -1,0 +1,60 @@
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import pandas as pd
+
+# Create a dummy customer dataset
+data = {
+    'CustomerID': range(1, 101),
+    'Annual_Income_(k$)': np.random.normal(50, 20, 100),
+    'Spending_Score_(1-100)': np.random.randint(1, 101, 100),
+    'Age': np.random.randint(18, 70, 100),
+    'Gender': np.random.choice(['Male', 'Female'], 100)
+}
+customer_df = pd.DataFrame(data)
+
+# Select features for clustering (e.g., Annual Income and Spending Score)
+features = ['Annual_Income_(k$)', 'Spending_Score_(1-100)']
+X = customer_df[features]
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Determine the optimal number of clusters using the Elbow method (example)
+# In a real-world scenario, you would explore different values of k and
+# analyze the inertia.
+inertia = []
+for k in range(1, 11):
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(X_scaled)
+    inertia.append(kmeans.inertia_)
+
+# Plot the Elbow method (optional, for visualization)
+# plt.figure(figsize=(8, 4))
+# plt.plot(range(1, 11), inertia, marker='o')
+# plt.title('Elbow Method for Optimal k')
+# plt.xlabel('Number of Clusters (k)')
+# plt.ylabel('Inertia')
+# plt.show()
+
+# Choose the number of clusters (let's say 4 based on visual inspection of a hypothetical elbow plot)
+n_clusters = 4
+kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+customer_df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+# Analyze the clusters
+print("Customer Segments:")
+print(customer_df.groupby('Cluster')[features].mean())
+
+# Visualize the clusters (example using the selected features)
+plt.figure(figsize=(8, 6))
+plt.scatter(customer_df['Annual_Income_(k$)'], customer_df['Spending_Score_(1-100)'], c=customer_df['Cluster'], cmap='viridis')
+plt.xlabel('Annual Income (k$)')
+plt.ylabel('Spending Score (1-100)')
+plt.title('Customer Segments')
+plt.colorbar(label='Cluster')
+plt.show()
