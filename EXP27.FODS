@@ -1,0 +1,41 @@
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+
+data = {
+    'usage_minutes': [200, 350, 150, 500, 280, 400, 180, 550, 320, 120],
+    'contract_duration': [12, 24, 6, 36, 18, 30, 9, 48, 24, 3],
+    'churn': [0, 1, 0, 1, 0, 1, 0, 1, 0, 0]
+}
+churn_df = pd.DataFrame(data)
+
+X = churn_df[['usage_minutes', 'contract_duration']]
+y = churn_df['churn']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+print("\nEnter customer features to predict churn:")
+try:
+    usage_minutes_input = float(input("Enter usage minutes: "))
+    contract_duration_input = float(input("Enter contract duration (in months): "))
+
+    new_customer_features = pd.DataFrame([[usage_minutes_input, contract_duration_input]],
+                                         columns=['usage_minutes', 'contract_duration'])
+
+    prediction = model.predict(new_customer_features)
+
+    if prediction[0] == 1:
+        print("\nPrediction: This customer is likely to churn.")
+    else:
+        print("\nPrediction: This customer is unlikely to churn.")
+
+except ValueError:
+    print("Invalid input. Please enter numerical values.")
