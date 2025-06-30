@@ -1,0 +1,18 @@
+
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+temperature = [10, 12, 15, 18, 22, 25, 28, 27, 24, 20, 15, 11]  # Sample temperature data
+rainfall = [50, 60, 70, 80, 90, 100, 110, 105, 95, 85, 75, 65]  # Sample rainfall data
+plt.figure(figsize=(10, 6))
+plt.plot(months, temperature, marker='o', linestyle='-', color='b')
+plt.title('Monthly Temperature Data')
+plt.xlabel('Month')
+plt.ylabel('Temperature (°C)')
+plt.grid(True)
+plt.show()
+plt.figure(figsize=(10, 6))
+plt.scatter(months, rainfall, marker='o', color='r')
+plt.title('Monthly Rainfall Data')
+plt.xlabel('Month')
+plt.ylabel('Rainfall (mm)')
+plt.grid(True)
+plt.show()
