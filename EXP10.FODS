@@ -1,0 +1,23 @@
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+sales = [150, 180, 220, 200, 250, 280, 300, 320, 290, 260, 230, 270]
+
+plt.figure(figsize=(10, 6))
+plt.plot(months, sales, marker='o', linestyle='-')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.title('Monthly Sales Data (Line Plot)')
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+plt.bar(months, sales)
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.title('Monthly Sales Data (Bar Plot)')
+plt.show()
+
+plt.figure(figsize=(8, 8))
+plt.pie(sales, labels=months, autopct='%1.1f%%', startangle=140)
+plt.title('Monthly Sales Distribution (Pie Chart)')
+plt.axis('equal')
+plt.show()
