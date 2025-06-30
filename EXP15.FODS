@@ -1,0 +1,23 @@
+def frequency_distribution_of_likes(likes_list):
+  """
+  Calculates the frequency distribution of likes.
+
+  Args:
+    likes_list (list): A list of integers representing the number of likes for each post.
+
+  Returns:
+    collections.Counter: A Counter object containing the frequency of each like count.
+  """
+  return Counter(likes_list)
+
+# Example usage:
+# Assume this is your list of likes for different posts
+post_likes = [10, 25, 5, 10, 15, 25, 10, 5, 20, 25, 15]
+
+# Calculate the frequency distribution
+likes_frequency = frequency_distribution_of_likes(post_likes)
+
+# Print the frequency distribution
+print("Frequency distribution of likes:")
+for likes, frequency in likes_frequency.items():
+  print(f"Likes: {likes}, Frequency: {frequency}")
